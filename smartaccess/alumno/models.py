@@ -1,8 +1,11 @@
+from django.db import models
+from usuarios.models import Usuario
+
 class Alumno(models.Model):
     usuario = models.OneToOneField(
-        Usuario,
+        'usuarios.Usuario',
         on_delete=models.CASCADE,
-        primary_key=True
+        related_name='alumno'
     )
     matricula = models.CharField(max_length=20, unique=True)
     semestre = models.IntegerField()

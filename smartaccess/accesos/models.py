@@ -1,9 +1,9 @@
 from django.db import models
-from usuarios.models import Usuario
+from credenciales.models import Credencial
 
 class Acceso(models.Model):
-    usuario = models.ForeignKey(
-        Usuario,
+    credencial = models.ForeignKey(
+        Credencial,
         on_delete=models.CASCADE,
         related_name='accesos'
     )
@@ -14,4 +14,4 @@ class Acceso(models.Model):
     dispositivo = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.usuario} - {self.fecha_hora}"
+        return f"{self.credencial.usuario.nombre} - {self.fecha_hora}"

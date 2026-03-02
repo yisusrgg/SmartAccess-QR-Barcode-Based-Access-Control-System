@@ -1,0 +1,161 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Control de Acceso</title>
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #1e3c72;
+        }
+
+        .subtitle {
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .access-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .method {
+            width: 45%;
+        }
+
+        .method h2 {
+            margin-bottom: 10px;
+            color: #2a5298;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1e3c72;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #16325c;
+        }
+
+        .divider {
+            font-weight: bold;
+            font-size: 20px;
+            color: #999;
+        }
+
+        .resultado {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .permitido {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .denegado {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sistema de Control de Acceso</h1>
+        <p class="subtitle">Validación por Código QR o Credencial</p>
+
+        <div class="access-box">
+
+            <div class="method">
+                <h2>Escaneo QR</h2>
+                <input type="text" id="qrInput" placeholder="Escanee el código QR aquí">
+                <button onclick="validarAcceso('qr')">Validar QR</button>
+            </div>
+
+            <div class="divider">O</div>
+
+            <div class="method">
+                <h2>Ingreso Manual</h2>
+                <input type="text" id="credencialInput" placeholder="Ingrese número de credencial">
+                <button onclick="validarAcceso('credencial')">Validar Credencial</button>
+            </div>
+
+        </div>
+
+        <div id="resultado" class="resultado">
+            Esperando validación...
+        </div>
+    </div>
+
+<script>
+function validarAcceso(tipo) {
+    let valor;
+    if (tipo === 'qr') {
+        valor = document.getElementById('qrInput').value;
+    } else {
+        valor = document.getElementById('credencialInput').value;
+    }
+
+    const resultado = document.getElementById('resultado');
+
+    // Simulación simple de validación
+    if (valor === "12345") {
+        resultado.textContent = "✅ ACCESO PERMITIDO";
+        resultado.className = "resultado permitido";
+    } else {
+        resultado.textContent = "❌ ACCESO DENEGADO";
+        resultado.className = "resultado denegado";
+    }
+}
+</script>
+
+</body>
+</html>
