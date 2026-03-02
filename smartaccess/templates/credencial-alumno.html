@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Credencial Virtual</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center;
+            padding: 50px; 
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .tarjeta { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            display: flex;
+            /* display: inline-block;  */
+            flex-direction: column;
+            gap: 15px;
+        }
+        #codigo-qr { 
+            margin-top: 20px; 
+            display: flex; 
+            justify-content: center; 
+        }
+        .error { 
+            color: red; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tarjeta">
+        <h2>Credencial Universitaria</h2>
+        <p><strong>Alumno:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Matrícula:</strong> {{ alumno.matricula }}</p>
+        <p><strong>Carrera:</strong> {{ alumno.carrera }}</p>
+
+        <hr>
+
+        {% if credencial %}
+            <p>Pasa este código por el escáner para entrar:</p>
+            
+            <div id="codigo-qr"></div>
+
+            <script>
+                // 1. Django imprime el UUID aquí en texto plano
+                var codigoSecreto = "{{ credencial.codigo_unico }}";
+
+                // 2. JavaScript toma ese texto y lo convierte en una imagen QR
+                new QRCode(document.getElementById("codigo-qr"), {
+                    text: codigoSecreto,
+                    width: 250,  // Ancho del QR
+                    height: 250, // Alto del QR
+                    colorDark : "#000000", // Color de los cuadritos
+                    colorLight : "#ffffff", // Color del fondo
+                    correctLevel : QRCode.CorrectLevel.H // Nivel de corrección de errores
+                });
+            </script>
+        {% else %}
+            <p class="error">Aún no tienes una credencial activa. Pasa a Control Escolar.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

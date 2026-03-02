@@ -10,7 +10,6 @@ ROLE_CHOICES = (
 
 class Usuario(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    correo = models.EmailField(unique=True)
     estado = models.BooleanField(default=True)
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
@@ -18,4 +17,4 @@ class Usuario(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
     def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+        return f"{self.first_name} {self.last_name}"
