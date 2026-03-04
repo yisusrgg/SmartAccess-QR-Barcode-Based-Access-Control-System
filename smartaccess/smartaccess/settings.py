@@ -127,8 +127,21 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
+AUTHENTICATION_BACKENDS = [
+    'usuarios.backends.SicenetAuthBackend', #conexión SOAP
+    'django.contrib.auth.backends.ModelBackend', # de respaldo por si entra el superadmin
+]
+
 #Redirigir al dashboard después de iniciar sesión
 LOGIN_REDIRECT_URL = '/'
+
+
+# Agregar confianza para el entorno de desarrollo local
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/

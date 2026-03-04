@@ -59,22 +59,27 @@
             <div id="codigo-qr"></div>
 
             <script>
-                // 1. Django imprime el UUID aquí en texto plano
                 var codigoSecreto = "{{ credencial.codigo_unico }}";
 
-                // 2. JavaScript toma ese texto y lo convierte en una imagen QR
                 new QRCode(document.getElementById("codigo-qr"), {
                     text: codigoSecreto,
-                    width: 250,  // Ancho del QR
-                    height: 250, // Alto del QR
-                    colorDark : "#000000", // Color de los cuadritos
-                    colorLight : "#ffffff", // Color del fondo
-                    correctLevel : QRCode.CorrectLevel.H // Nivel de corrección de errores
+                    width: 250,  
+                    height: 250, 
+                    colorDark : "#000000", 
+                    colorLight : "#ffffff", 
+                    correctLevel : QRCode.CorrectLevel.H
                 });
             </script>
         {% else %}
             <p class="error">Aún no tienes una credencial activa. Pasa a Control Escolar.</p>
         {% endif %}
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">
+                Cerrar Sesión
+            </button>
+        </form>
     </div>
 
 </body>

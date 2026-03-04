@@ -30,6 +30,7 @@ urlpatterns = [
 
     # MUNDO WEB (Para ti y el personal administrativo) ======================
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 
     # Usuarios
     path('', usuarios_views.dashboard, name='dashboard'), 

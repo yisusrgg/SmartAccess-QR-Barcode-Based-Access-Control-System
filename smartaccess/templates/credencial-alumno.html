@@ -35,7 +35,6 @@
             gap: 15px;
         }
         #codigo-qr { 
-            margin-top: 20px; 
             display: flex; 
             justify-content: center; 
         }
@@ -43,10 +42,22 @@
             color: red; 
             font-weight: bold; 
         }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2a5298;
+        }
     </style>
 </head>
 <body>
-
     <div class="tarjeta">
         <h2>Credencial Universitaria</h2>
         <p><strong>Alumno:</strong> {{ user.first_name }} {{ user.last_name }}</p>
@@ -77,6 +88,12 @@
         {% else %}
             <p class="error">Aún no tienes una credencial activa. Pasa a Control Escolar.</p>
         {% endif %}
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">
+                Cerrar Sesión
+            </button>
+        </form>
     </div>
 
 </body>

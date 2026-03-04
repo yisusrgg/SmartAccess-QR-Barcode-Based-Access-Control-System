@@ -133,6 +133,13 @@
         <div id="resultado" class="resultado">
             Esperando validación...
         </div>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">
+                Cerrar Sesión
+            </button>
+        </form>
     </div>
 
 <script>

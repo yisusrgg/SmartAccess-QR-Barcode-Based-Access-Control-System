@@ -6,10 +6,10 @@ from django.contrib.auth.decorators import login_required
 def alumno_dashboard(request):
     usuario = request.user
     credencial_activa = usuario.credenciales.filter(estado=True).first()
-    # Preparamos los datos para mandarlos al HTML
+    # datos para mandarlos al HTML
     contexto = {
-        'alumno': usuario.alumno,  # Pasamos los datos del alumno (matrícula, carrera)
-        'credencial': credencial_activa # Pasamos la credencial (para sacar el UUID)
+        'alumno': usuario.alumno,  
+        'credencial': credencial_activa
     }
 
     # Aquí el alumno solo verá su código QR
