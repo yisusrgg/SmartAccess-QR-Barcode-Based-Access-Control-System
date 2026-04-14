@@ -43,7 +43,7 @@ urlpatterns = [
     # MUNDO API REST (Para la App Android y el ESP32) =======================
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/access/', include('accesos.urls')), <-- Esta la descomentaremos cuando programemos el ESP32
+    path('api/acceso/', include('accesos.urls')),
 ]
 
 
