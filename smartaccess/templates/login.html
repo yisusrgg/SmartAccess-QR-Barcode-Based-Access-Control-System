@@ -63,6 +63,13 @@
         button:hover {
             background-color: #2a5298;
         }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +90,10 @@
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <select name="tipo">
+                <option value="0">ALUMNO</option>
+                <option value="1">DOCENTE</option>
+            </select>
             <button type="submit">Iniciar Sesión</button>
         </form>
     </div>

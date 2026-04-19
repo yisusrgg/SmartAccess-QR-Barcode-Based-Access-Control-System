@@ -24,12 +24,13 @@ from django.contrib.auth import views as auth_views
 from usuarios import views as usuarios_views
 from alumno import views as alumno_views
 from personal import views as personal_views
+from usuarios.formLogin import MiFormularioLogin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # MUNDO WEB (Para ti y el personal administrativo) ======================
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=MiFormularioLogin), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 
     # Usuarios
@@ -52,7 +53,7 @@ urlpatterns = [
 # urlpatterns = [
 #     # El panel de Django y tu Login se quedan aquí porque son globales
 #     path('admin/', admin.site.urls),
-#     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+#     path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=MiFormularioLogin), name='login'),
     
 #     # Delegamos las rutas a los "recepcionistas" de cada app:
 #     # Si la ruta está vacía (''), manda a preguntar al urls.py de usuarios
