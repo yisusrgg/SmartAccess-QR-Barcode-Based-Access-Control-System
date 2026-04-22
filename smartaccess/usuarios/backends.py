@@ -99,6 +99,14 @@ class SicenetAuthBackend(ModelBackend):
             carrera = datos.get("carrera", "")
             semestre = datos.get("semActual", "") 
             nombre_completo = datos.get("nombre", username)
+            estado_credencial = datos.get("estatus", False)
+            print(f"Datos obtenidos de SICENET: {estado_credencial}")
+            if isinstance(estado_credencial, str) and (estado_credencial.upper() == "VIGENTE" or estado_credencial.upper() == "VI"):
+                estado_credencial = True
+            else:
+                estado_credencial = False
+
+            print(f"Datos obtenidos de SICENET: {estado_credencial}")
 
             #sacar lastname con los ultimos dos nombres del campo nombre_completo
             if isinstance(nombre_completo, str) and nombre_completo.strip():
@@ -149,7 +157,9 @@ class SicenetAuthBackend(ModelBackend):
                 #fecha de expiracion es igual a la fecha en la que se crea la credencial + 5 años
                 fecha_creacion = timezone.now().date()
                 fecha_expiracion = fecha_creacion + timedelta(days=5*365)
-                Credencial.objects.create(usuario=usuario, fecha_expiracion=fecha_expiracion)
+                
+                
+                Credencial.objects.create(usuario=usuario, fecha_expiracion=fecha_expiracion, estado=estado_credencial)
             
             return usuario
         

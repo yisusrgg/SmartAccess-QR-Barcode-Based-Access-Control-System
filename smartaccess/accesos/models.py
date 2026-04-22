@@ -14,4 +14,6 @@ class Acceso(models.Model):
     dispositivo = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.credencial.usuario.nombre} - {self.fecha_hora}"
+        if self.credencial and self.credencial.usuario:
+            return f"{self.credencial.usuario.username} - {self.fecha_hora}"
+        return f"Acceso Huérfano - {self.fecha_hora}"

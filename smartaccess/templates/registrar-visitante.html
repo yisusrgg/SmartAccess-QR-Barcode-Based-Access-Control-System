@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Control de Acceso</title>
-    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
     <style>
         * {
             margin: 0;
@@ -33,12 +33,10 @@
         h1 {
             margin-bottom: 10px;
             color: #1e3c72;
-            font-size: 1.8rem;
         }
         .subtitle {
             margin-bottom: 30px;
             color: #555;
-            font-size: 1rem;
         }
         .input-group {
             margin-bottom: 20px;
@@ -48,14 +46,12 @@
             display: block;
             margin-bottom: 5px;
             color: #333;
-            font-size: 1rem;
         }
-        .input-group input {
+        .input-group input , textarea{
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
         button {
             width: 70%;
@@ -65,7 +61,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 16px;
             margin-top: 20px;
             font-weight: 500;
         }
@@ -78,45 +74,41 @@
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
         a {
             display: inline-block;
             margin-top: 20px;
             color: #1e3c72;
             text-decoration: none;
+            font-weight: 500;
         }
         a:hover {
             text-decoration: underline;
         }
-        
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido al Sistema de Control de Acceso</h1>
-        <p class="subtitle">Por favor, inicie sesión para continuar</p>
+        <h1>Registrar Visitante</h1>
+        <p class="subtitle">Por favor, complete los datos para registrar un nuevo visitante</p>
 
-        <form method="post" action="{% url 'login' %}">
+        <form method="post" action="{% url 'registrar_visitante' %}">
             {% csrf_token %}
-            {% if form.errors %}
-                <p style="color: red; margin-bottom: 10px;">Usuario o contraseña incorrectos.</p>
-            {% endif %}
             <div class="input-group">
-                <label for="username">Usuario:</label>
-                <input type="text" id="username" name="username" required>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
             </div>
             <div class="input-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="curp">CURP:</label>
+                <input type="text" id="curp" name="curp" required>
             </div>
-            <select name="tipo">
-                <option value="0">ALUMNO</option>
-                <option value="1">DOCENTE</option>
-            </select>
-            <button type="submit">Iniciar Sesión</button>
+            <div class="input-group">
+                <label for="motivo">Motivo de la visita:</label>
+                <textarea name="motivo" id="motivo" required rows="3"></textarea>
+            </div>
+            <button type="submit">Registrar Visitante</button>
         </form>
-        <!-- <a href="{% url 'registrar_visitante' %}">Registrar visitante</a> -->
+        <a href="{% url 'admin_dashboard' %}">Regresar</a>
     </div>
 
 </body>

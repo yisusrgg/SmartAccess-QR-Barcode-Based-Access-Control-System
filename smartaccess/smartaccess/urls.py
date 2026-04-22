@@ -25,6 +25,7 @@ from usuarios import views as usuarios_views
 from alumno import views as alumno_views
 from personal import views as personal_views
 from usuarios.formLogin import MiFormularioLogin
+from visitantes import views as visitantes_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,6 +41,9 @@ urlpatterns = [
     # Alumnos y Personal
     path('alumno-credencial/', alumno_views.alumno_dashboard, name='alumno_dashboard'),
     path('personal-credencial/', personal_views.personal_dashboard, name='personal_dashboard'),
+
+    #Visitantes
+    path('registrar-visitante/', visitantes_views.registrar_visitante, name='registrar_visitante'),
 
     # MUNDO API REST (Para la App Android y el ESP32) =======================
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

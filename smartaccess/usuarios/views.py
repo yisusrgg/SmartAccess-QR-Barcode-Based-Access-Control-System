@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 def dashboard(request):
     # request.user contiene toda la info del usuario que acaba de iniciar sesión
     usuario = request.user
-
+    
     # Si es Superusuario (Administrador)
     if usuario.is_superuser or usuario.is_staff:
         return redirect('admin_dashboard')

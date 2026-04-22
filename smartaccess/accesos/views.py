@@ -12,7 +12,7 @@ class ValidarQRView(APIView):
 
     def post(self, request):
         codigo = request.data.get("codigo")
-
+        
         try:
             # Intentar tratar el código como UUID (QR digital)
             uuid.UUID(str(codigo))

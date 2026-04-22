@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^=%d^nl_=td4$9d0qs%@(37i5v&p)yp@s4y@mi^5u9d89o9+sv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.115', '192.168.0.138', '192.168.137.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.115', '192.168.0.138', '192.168.137.1', '192.168.137.11']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accesos',
     'personal',
     'alumno',
+    'visitantes',
 ]
 
 MIDDLEWARE = [
@@ -128,8 +129,8 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
 AUTHENTICATION_BACKENDS = [
-    'usuarios.backends.SicenetAuthBackend', #conexión SOAP
     'django.contrib.auth.backends.ModelBackend', # de respaldo por si entra el superadmin
+    'usuarios.backends.SicenetAuthBackend', #conexión SOAP
 ]
 
 #Redirigir al dashboard después de iniciar sesión
@@ -141,6 +142,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://192.168.137.1:8000',
+    'http://192.168.137.11:8000',
 ]
 
 
@@ -149,7 +151,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
+
 
 USE_I18N = True
 

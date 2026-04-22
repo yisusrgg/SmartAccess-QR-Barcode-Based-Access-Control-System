@@ -29,12 +29,11 @@
             border-radius: 15px; 
             box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
             display: flex;
-            /* display: inline-block;  */
             flex-direction: column;
             gap: 15px;
+            margin: 15px 0px;
         }
         #codigo-qr { 
-            margin-top: 20px; 
             display: flex; 
             justify-content: center; 
         }
@@ -55,14 +54,22 @@
         button:hover {
             background-color: #2a5298;
         }
+        a {
+            display: inline-block;
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-
     <div class="tarjeta">
         <h2>Credencial Universitaria</h2>
-        <p><strong>Personal:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-        <p><strong>Departamento:</strong> {{ personal.departamento }}</p>
+        <p><strong>Nombre:</strong> {{ nuevo_visitante.nombre }}</p>
+        <p><strong>CURP:</strong> {{ nuevo_visitante.curp }}</p>
         <hr>
 
         {% if credencial %}
@@ -71,27 +78,33 @@
             <div id="codigo-qr"></div>
 
             <script>
+                // 1. Django imprime el UUID aquí en texto plano
                 var codigoSecreto = "{{ credencial.codigo_unico }}";
 
+                // 2. JavaScript toma ese texto y lo convierte en una imagen QR
                 new QRCode(document.getElementById("codigo-qr"), {
                     text: codigoSecreto,
-                    width: 250,  
-                    height: 250, 
-                    colorDark : "#000000", 
-                    colorLight : "#ffffff", 
-                    correctLevel : QRCode.CorrectLevel.H
+                    width: 250,  // Ancho del QR
+                    height: 250, // Alto del QR
+                    colorDark : "#000000", // Color de los cuadritos
+                    colorLight : "#ffffff", // Color del fondo
+                    correctLevel : QRCode.CorrectLevel.H // Nivel de corrección de errores
                 });
             </script>
         {% else %}
             <p class="error">Aún no tienes una credencial activa. Pasa a Control Escolar.</p>
         {% endif %}
+        <div style="margin-top: 10px;">
+            <a href="{% url 'registrar_visitante' %}" style="text-decoration: none;">
+                <button type="button" >
+                    Registrar otro visitante
+                </button>
+            </a>
+        </div>
 
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">
-                Cerrar Sesión
-            </button>
-        </form>
+            <a href="{% url 'admin_dashboard' %}" >
+                Regresar al Dashboard
+            </a>
     </div>
 
 </body>

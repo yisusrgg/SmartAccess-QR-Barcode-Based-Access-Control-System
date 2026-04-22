@@ -12,13 +12,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Acceso',
+            name='Visitante',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fecha_hora', models.DateTimeField(auto_now_add=True)),
-                ('tipo_movimiento', models.CharField(max_length=20)),
-                ('resultado', models.CharField(max_length=20)),
-                ('dispositivo', models.CharField(max_length=100)),
+                ('nombre', models.CharField(max_length=200)),
+                ('curp', models.CharField(max_length=18, unique=True)),
+                ('motivo', models.TextField()),
+                ('fecha_registro', models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

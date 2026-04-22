@@ -8,13 +8,22 @@ class Credencial(models.Model):
     codigo_unico = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     fecha_emision = models.DateField(default=timezone.now)
     fecha_expiracion = models.DateField()
-    estado = models.BooleanField(default=True)
+    estado = models.BooleanField(default=False)
 
     usuario = models.ForeignKey(
         'usuarios.Usuario',
         on_delete=models.CASCADE,
-        related_name='credenciales'
+        related_name='credenciales',
+        blank=True, null=True
+    )
+
+    visitante = models.ForeignKey(
+        'visitantes.Visitante', 
+        on_delete=models.CASCADE, 
+        null=True, blank=True
     )
 
     def __str__(self):
         return str(self.codigo_unico)
+    
+

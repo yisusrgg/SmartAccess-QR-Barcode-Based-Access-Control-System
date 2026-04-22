@@ -9,7 +9,7 @@ class Personal(models.Model):
     )
     codigo_profesor = models.CharField(max_length=20, unique=True)
     departamento = models.CharField(max_length=100)
-    tipo_contrato = models.CharField(max_length=50)
+    tipo_contrato = models.CharField(max_length=50, default="Desconocido")
 
     def __str__(self):
         return self.codigo_profesor
