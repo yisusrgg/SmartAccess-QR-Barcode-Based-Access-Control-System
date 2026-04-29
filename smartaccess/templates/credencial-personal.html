@@ -42,6 +42,10 @@
             color: red; 
             font-weight: bold; 
         }
+        .success { 
+            color: green; 
+            font-weight: bold; 
+        }
         button {
             width: 100%;
             padding: 10px;
@@ -55,6 +59,27 @@
         button:hover {
             background-color: #2a5298;
         }
+        .btn-salida {
+            background-color: #dc3545;
+        }
+        .btn-salida:hover {
+            background-color: #c82333;
+        }
+        .estado-ingreso {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .estado-ingresado {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .estado-no-ingresado {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +91,16 @@
         <hr>
 
         {% if credencial %}
+            {% if ingresado %}
+                <div class="estado-ingreso estado-ingresado" id="estado-ingreso">
+                    <strong>✓ Ya has ingresado</strong>
+                </div>
+            {% else %}
+                <div class="estado-ingreso estado-no-ingresado" id="estado-ingreso">
+                    <strong>No has ingresado</strong>
+                </div>
+            {% endif %}
+            
             <p>Pasa este código por el escáner para entrar:</p>
             
             <div id="codigo-qr"></div>
@@ -81,6 +116,76 @@
                     colorLight : "#ffffff", 
                     correctLevel : QRCode.CorrectLevel.H
                 });
+            </script>
+            
+            <!-- Contenedor para el botón de salida (se actualiza automáticamente) -->
+            <div id="contenedor-salida">
+                {% if ingresado %}
+                    <button class="btn-salida" onclick="registrarSalida()">
+                        Registrar Salida
+                    </button>
+                {% endif %}
+            </div>
+            
+            <script>
+                // Polling para verificar estado de ingreso cada 3 segundos
+                function verificarEstado() {
+                    fetch('/api/acceso/estado/?codigo=' + codigoSecreto)
+                        .then(response => response.json())
+                        .then(data => {
+                            const contenedor = document.getElementById('contenedor-salida');
+                            const estadoDiv = document.getElementById('estado-ingreso');
+                            
+                            if (data.ingresado) {
+                                // Ya está dentro, mostrar botón de salida si no existe
+                                if (!document.getElementById('btn-salida')) {
+                                    contenedor.innerHTML = '<button id="btn-salida" class="btn-salida" onclick="registrarSalida()">Registrar Salida</button>';
+                                    estadoDiv.className = 'estado-ingreso estado-ingresado';
+                                    estadoDiv.innerHTML = '<strong>✓ Ya has ingresado</strong>';
+                                }
+                            } else {
+                                // No está dentro, mostrar estado de no ingreso
+                                if (document.getElementById('btn-salida')) {
+                                    contenedor.innerHTML = '';
+                                    estadoDiv.className = 'estado-ingreso estado-no-ingresado';
+                                    estadoDiv.innerHTML = '<strong>No has ingresado</strong>';
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.log('Error al verificar estado:', error);
+                        });
+                }
+                
+                // Iniciar polling cada 3 segundos
+                setInterval(verificarEstado, 3000);
+                
+                function registrarSalida() {
+                    if (confirm('¿Estás seguro de que quieres registrar tu salida?')) {
+                        fetch('/api/acceso/salida/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({
+                                codigo: codigoSecreto,
+                                dispositivo: "Web"
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.salida === 'permitida') {
+                                location.reload();
+                            } else {
+                                alert('Error: ' + (data.motivo || 'No se pudo registrar la salida'));
+                            }
+                        })
+                        .catch(error => {
+                            alert('Error de conexión');
+                        });
+                    }
+                }
             </script>
         {% else %}
             <p class="error">Aún no tienes una credencial activa. Pasa a Control Escolar.</p>

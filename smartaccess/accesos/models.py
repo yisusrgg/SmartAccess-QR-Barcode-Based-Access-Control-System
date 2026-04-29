@@ -11,6 +11,7 @@ class Acceso(models.Model):
     fecha_hora = models.DateTimeField(auto_now_add=True)
     tipo_movimiento = models.CharField(max_length=20)
     resultado = models.CharField(max_length=20)
+    motivo = models.CharField(max_length=100, blank=True, null=True)
     dispositivo = models.CharField(max_length=100)
 
     def __str__(self):

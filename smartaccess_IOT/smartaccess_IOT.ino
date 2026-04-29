@@ -97,6 +97,7 @@ void validarConDjango(String codigo);
 void abrirServo();
 void beepPermitido();
 void beepDenegado();
+void beepYaIngresado();
 void beepError();
 
 // ============================================================
@@ -215,11 +216,19 @@ void validarConDjango(String codigo) {
   if (httpCode == 200) {
     String respuesta = http.getString();
     Serial.println("Respuesta: " + respuesta);
-    StaticJsonDocument<128> resp;
+    StaticJsonDocument<256> resp;
     if (!deserializeJson(resp, respuesta)) {
       String resultado = resp["acceso"].as<String>();
-      if (resultado == "permitido") beepPermitido();
-      else beepDenegado();
+      String motivo = resp["motivo"].as<String>();
+      
+      if (resultado == "permitido") {
+        beepPermitido();
+      } else if (motivo == "ya_ingresada") {
+        // Credencial ya ha ingresado, necesita salir primero
+        beepYaIngresado();
+      } else {
+        beepDenegado();
+      }
     }
   } else if (httpCode == 404) {
     Serial.println("Credencial no existe.");
@@ -239,11 +248,11 @@ void abrirServo() {
   servo.write(SERVO_ABIERTO);
   servoAbierto = true;
   servoTiempo  = millis();
-  Serial.println("Servo abierto — cerrará en " + String(SERVO_TIEMPO / 1000) + "s");
+  Serial.println("Servo abierto");
 }
 
 void beepPermitido() {
-  Serial.println("✅ ACCESO PERMITIDO");
+  Serial.println("ACCESO PERMITIDO");
   lcdMensajeTemporal(" ACCESO PERMIT. ", "  Bienvenido!   ");
   abrirServo();
   pinMode(M308_BEEP_PIN, OUTPUT);
@@ -253,7 +262,7 @@ void beepPermitido() {
 }
 
 void beepDenegado() {
-  Serial.println("❌ ACCESO DENEGADO");
+  Serial.println("ACCESO DENEGADO");
   lcdMensajeTemporal(" ACCESO DENEGADO", "  No autorizado ");
   pinMode(M308_BEEP_PIN, OUTPUT);
   for (int i = 0; i < 3; i++) {
@@ -263,8 +272,20 @@ void beepDenegado() {
   pinMode(M308_BEEP_PIN, INPUT);
 }
 
+void beepYaIngresado() {
+  Serial.println("YA INGRESADO - Debe salir primero");
+  lcdMensajeTemporal(" YA INGRESADO ", "Salga para entrar");
+  pinMode(M308_BEEP_PIN, OUTPUT);
+  // Dos pitidos largos para distinguir de acceso denegado normal
+  digitalWrite(M308_BEEP_PIN, HIGH); delay(150);
+  digitalWrite(M308_BEEP_PIN, LOW);  delay(100);
+  digitalWrite(M308_BEEP_PIN, HIGH); delay(150);
+  digitalWrite(M308_BEEP_PIN, LOW);
+  pinMode(M308_BEEP_PIN, INPUT);
+}
+
 void beepError() {
-  Serial.println("⚠️  Error de conexión");
+  Serial.println("Error de conexión");
   lcdMensajeTemporal(" ERROR DE RED   ", "Revise conexion ");
   pinMode(M308_BEEP_PIN, OUTPUT);
   digitalWrite(M308_BEEP_PIN, HIGH); delay(200);
